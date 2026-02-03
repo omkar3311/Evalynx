@@ -7,7 +7,56 @@
 </head>
 <body>
 
+<div class="container">
     <h1>Evalynx</h1>
+
+    <p id="question-text">Loading question...</p>
+
+    <input
+        type="text"
+        id="answer-input"
+        placeholder="Type your answer here..."
+    >
+
+    <button onclick="submitAnswer()">Submit</button>
+
+    <div id="response"></div>
+</div>
+
+<script>
+    async function loadQuestion() {
+        const res = await fetch("/question");
+        const data = await res.json();
+        document.getElementById("question-text").innerText = data.question;
+    }
+
+    async function submitAnswer() {
+        const answer = document.getElementById("answer-input").value;
+
+        if (!answer.trim()) {
+            alert("Answer can't be empty!");
+            return;
+        }
+
+        const res = await fetch("/evaluate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ answer: answer })
+        });
+
+        const data = await res.json();
+
+        document.getElementById("response").innerHTML = `
+            <p><strong>Result:</strong> ${data.correct ? "Correct" : "Incorrect"}</p>
+            <p><strong>Score:</strong> ${data.score}</p>
+            <p>${data.feedback}</p>
+        `;
+    }
+
+    loadQuestion();
+</script>
 
 </body>
 </html>
