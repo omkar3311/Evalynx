@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evalynx</title>
 </head>
+<style>
+    .loader {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.hidden {
+    display: none;
+}
+
+</style>
 <body>
 
 <div class="container">
@@ -19,44 +31,69 @@
     >
 
     <button onclick="submitAnswer()">Submit</button>
-
+    <div id="loader" class="loader hidden">
+        Evaluating answer…
+    </div>
     <div id="response"></div>
 </div>
 
 <script>
+    let currentQuestion = "";
+
     async function loadQuestion() {
         const res = await fetch("/question");
         const data = await res.json();
-        document.getElementById("question-text").innerText = data.question;
+        currentQuestion = data.question;
+        document.getElementById("question-text").innerText = currentQuestion;
     }
 
     async function submitAnswer() {
-        const answer = document.getElementById("answer-input").value;
+        const answerInput = document.getElementById("answer-input");
+        const loader = document.getElementById("loader");
+        const responseDiv = document.getElementById("response");
+        const submitBtn = document.getElementById("submit-btn");
+
+        const answer = answerInput.value;
 
         if (!answer.trim()) {
             alert("Answer can't be empty!");
             return;
         }
 
-        const res = await fetch("/evaluate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ answer: answer })
-        });
+        loader.classList.remove("hidden");
+        responseDiv.innerHTML = "";
+        submitBtn.disabled = true;
 
-        const data = await res.json();
+        try {
+            const res = await fetch("/evaluate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    question: currentQuestion,
+                    answer: answer
+                })
+            });
 
-        document.getElementById("response").innerHTML = `
-            <p><strong>Result:</strong> ${data.correct ? "Correct" : "Incorrect"}</p>
-            <p><strong>Score:</strong> ${data.score}</p>
-            <p>${data.feedback}</p>
-        `;
+            const data = await res.json();
+
+            responseDiv.innerHTML = `
+                <p><strong>Evaluation:</strong></p>
+                <pre>${data.evaluation}</pre>
+            `;
+        } catch (err) {
+            responseDiv.innerHTML = "<p>❌ Something went wrong.</p>";
+        } finally {
+            loader.classList.add("hidden");
+            submitBtn.disabled = false;
+        }
     }
 
     loadQuestion();
 </script>
+
+
 
 </body>
 </html>
