@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Evalynx AI Interview</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #e5e7eb;
+}
+
+.app {
+  width: 100%;
+  max-width: 900px;
+  background: #020617;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #1e293b;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.call-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.panel {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 12px;
+  position: relative;
+}
+
+.ai-panel img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.ai-speaking {
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(56,189,248,0.15); }
+  100% { box-shadow: 0 0 0 0 rgba(56,189,248,0.3); }
+}
+
+.question-text {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding: 10px;
+  background: #020617;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+}
+
+video {
+  width: 100%;
+  height: 220px;
+  background: black;
+  border-radius: 10px;
+}
+
+.camera-controls {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.camera-controls button {
+  flex: 1;
+}
+
+.controls {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+textarea {
+  flex: 1;
+  resize: none;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: #e5e7eb;
+}
+
+button {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  color: #020617;
+}
+
+button:disabled {
+  opacity: 0.6;
+}
+
+#response {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h2 style="text-align:center; margin-bottom:16px;">Evalynx AI Interview</h2>
+
+  <div class="call-grid">
+
+    <div class="panel ai-panel" id="aiPanel">
+      <img src="om.jpg" alt="AI Interviewer"/>
+      <div class="question-text" id="questionText">
+        Loading question...
+      </div>
+      <button id="speakBtn" onclick="speakAgain()()" 
+          title="Read question again"
+          style="margin-top:8px; width:100%;">
+            🔊 Read Again
+        </button>
+    </div>
+
+    <div class="panel">
+      <video id="cam" autoplay playsinline></video>
+
+      <div class="camera-controls">
+        <button id="startCam">Camera On</button>
+        <button id="stopCam" disabled>Camera Off</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <textarea id="answerInput" rows="2" placeholder="Speak or type your answer..."></textarea>
+    <button onclick="startListening()">🎤</button>
+    <button onclick="submitAnswer()">Submit</button>
+  </div>
+
+  <div id="response"></div>
+
+</div>
+
+<script>
+let currentQuestion = "";
+let recognition = null;
+let stream = null;
+let isSpeaking = false;
+
+async function loadQuestion() {
+  const res = await fetch("/question");
+  const data = await res.json();
+  currentQuestion = data.question;
+  document.getElementById("questionText").innerText = currentQuestion;
+  speakQuestion(currentQuestion);
+}
+
+function speakQuestion(text) {
+  if (!("speechSynthesis" in window)) return;
+  if (!text) return;
+
+  const panel = document.getElementById("aiPanel");
+  const speakBtn = document.getElementById("speakBtn");
+
+  window.speechSynthesis.cancel();
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "en-US";
+  utter.rate = 1;
+  utter.pitch = 1;
+
+  utter.onstart = () => {
+    isSpeaking = true;
+    panel.classList.add("ai-speaking");
+    if (speakBtn) speakBtn.disabled = true;
+  };
+
+  utter.onend = () => {
+    isSpeaking = false;
+    panel.classList.remove("ai-speaking");
+    if (speakBtn) speakBtn.disabled = false;
+  };
+
+  window.speechSynthesis.speak(utter);
+}
+
+function speakAgain() {
+  if (isSpeaking) return;
+  speakQuestion(currentQuestion);
+}
+
+function startListening() {
+  if (!("webkitSpeechRecognition" in window)) return;
+
+  recognition = new webkitSpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onresult = e => {
+    document.getElementById("answerInput").value =
+      e.results[0][0].transcript;
+  };
+
+  recognition.start();
+}
+
+async function submitAnswer() {
+  const answer = document.getElementById("answerInput").value.trim();
+  if (!answer) return;
+
+  const resDiv = document.getElementById("response");
+  resDiv.style.display = "block";
+  resDiv.innerText = "Evaluating...";
+
+  const res = await fetch("/evaluate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question: currentQuestion, answer })
+  });
+
+  const data = await res.json();
+  resDiv.innerHTML = `
+                <p><strong>Evaluation:</strong></p>
+                <pre>${data.evaluation}</pre>
+                <pre> time taken :${data.time_taken}</pre>
+            `;
+}
+
+const video = document.getElementById("cam");
+const startCam = document.getElementById("startCam");
+const stopCam = document.getElementById("stopCam");
+
+startCam.onclick = async () => {
+  stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  video.srcObject = stream;
+  startCam.disabled = true;
+  stopCam.disabled = false;
+};
+
+stopCam.onclick = () => {
+  if (!stream) return;
+  stream.getTracks().forEach(t => t.stop());
+  video.srcObject = null;
+  stream = null;
+  startCam.disabled = false;
+  stopCam.disabled = true;
+};
+
+loadQuestion();
+</script>
+
+
+</body>
+</html>
