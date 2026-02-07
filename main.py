@@ -8,8 +8,11 @@ from app import AI_que ,AI_res
 from questions import que
 import random
 import time
+from fastapi.staticfiles import StaticFiles
+
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 class user(BaseModel):
