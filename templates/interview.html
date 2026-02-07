@@ -28,6 +28,7 @@ body {
   border-bottom: 1px solid #1e293b;
   display: flex;
   align-items: center;
+  text-align : center;
   z-index: 100;
 }
 
@@ -170,6 +171,15 @@ button:disabled {
   border: 1px solid #1e293b;
   display: none;
 }
+#response pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 </style>
 </head>
 
@@ -188,7 +198,7 @@ button:disabled {
 
     <div class="call-grid">
       <div class="panel ai-panel" id="aiPanel">
-        <img src="om.jpg" alt="AI Interviewer"/>
+        <img src="/static/images/om.jpg" alt="AI Interviewer">
         <div class="question-text" id="questionText">Loading question...</div>
         <button id="speakBtn" onclick="speakAgain()" style="margin-top:8px;width:100%;">🔊 Read Again</button>
       </div>
@@ -312,9 +322,11 @@ async function initInterview() {
   startCamera();
   await delay(2000);
   loadQuestion();
+  
 }
 
 initInterview();
+startListening();
 
 </script>
 </body>
