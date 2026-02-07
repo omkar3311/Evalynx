@@ -149,6 +149,7 @@
             font-size: 1.2rem;
             cursor: pointer;
             transition: background 0.15s ease, transform 0.15s ease;
+            margin-top:-11px;
         }
 
         #mic-btn:hover:not(:disabled) {
@@ -160,6 +161,39 @@
             opacity: 0.6;
             cursor: not-allowed;
         }
+        .question-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        #question-text {
+            flex: 1;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            padding: 14px;
+            border-radius: 10px;
+            background: #020617;
+            border: 1px solid #1e293b;
+        }
+
+        #read-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+            background: #020617;
+            color: #38bdf8;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            margin-top: 17px;
+        }
+
+        #read-btn:hover {
+            transform: translateY(-1px);
+        }
 
     </style>
 </head>
@@ -169,7 +203,13 @@
 <div class="container">
     <h1>Evalynx</h1>
 
-    <p id="question-text">Loading question...</p>
+    <div class="question-row">
+        <p id="question-text">Loading question...</p>
+        <button id="read-btn" onclick="readQuestion()" title="Read question aloud">
+            🔊
+        </button>
+    </div>
+
 
     <div class="answer-row">
             <textarea
@@ -262,7 +302,7 @@
         const micBtn = document.getElementById("mic-btn");
         const answerInput = document.getElementById("answer-input");
 
-        micBtn.innerText = "🎙️ Listening...";
+        micBtn.innerText = "🎙️";
         micBtn.disabled = true;
 
         recognition.start();
@@ -277,8 +317,31 @@
         };
 
         recognition.onend = function () {
-            micBtn.innerText = "🎤 Speak";
+            micBtn.innerText = "🎤";
             micBtn.disabled = false;
+        };
+    }
+    function readQuestion() {
+        if (!("speechSynthesis" in window)) {
+            alert("Text-to-speech not supported in this browser.");
+            return;
+        }
+
+        window.speechSynthesis.cancel();
+
+        const text = document.getElementById("question-text").innerText;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-US";
+        utterance.rate = 1;
+        utterance.pitch = 1;
+
+        window.speechSynthesis.speak(utterance);
+        utterance.onstart = () => {
+            document.getElementById("read-btn").innerText = "⏹";
+        };
+    
+        utterance.onend = () => {
+            document.getElementById("read-btn").innerText = "🔊";
         };
     }
 
