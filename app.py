@@ -27,10 +27,11 @@ def AI_que():
             }
         ]
     )
-    print("AI_que called")
+    print("AI_que recieved")
     return response["message"]["content"].strip()
 
 def AI_res(question, user_answer):
+    print("AI_res called")
     response = ollama.chat(
         model="mistral:7b",
         messages=[
@@ -55,5 +56,6 @@ def AI_res(question, user_answer):
             }
         ]
     )
+    print("AI_res recieved")
 
     return response["message"]["content"].strip()
