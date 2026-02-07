@@ -13,7 +13,7 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse(
-        "index.html",
+        "interview.html",
         {"request": request}
     )
 @app.get("/question")
