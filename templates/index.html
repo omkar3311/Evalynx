@@ -4,19 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evalynx</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Inter", system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e5e7eb;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            background: #020617;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid #1e293b;
+        }
+
+        h1 {
+            margin: 0 0 16px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #question-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 18px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #020617;
+            border: 1px solid #1e293b;
+        }
+
+        #answer-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #1e293b;
+            background: #020617;
+            color: #e5e7eb;
+            font-size: 1rem;
+            outline: none;
+            margin-bottom: 16px;
+        }
+
+        #answer-input::placeholder {
+            color: #64748b;
+        }
+
+        #answer-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            color: #020617;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.35);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loader {
+            margin-top: 14px;
+            text-align: center;
+            font-weight: 600;
+            color: #38bdf8;
+            animation: pulse 1.2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #response {
+            margin-top: 18px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #020617;
+            border: 1px solid #1e293b;
+        }
+
+        #response pre {
+            margin: 0;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            color: #e5e7eb;
+        }
+    </style>
 </head>
-<style>
-    .loader {
-    margin-top: 15px;
-    font-weight: bold;
-    color: #2563eb;
-}
 
-.hidden {
-    display: none;
-}
-
-</style>
 <body>
 
 <div class="container">
@@ -30,10 +143,12 @@
         placeholder="Type your answer here..."
     >
 
-    <button onclick="submitAnswer()">Submit</button>
+    <button id="submit-btn" onclick="submitAnswer()">Submit</button>
+
     <div id="loader" class="loader hidden">
         Evaluating answer…
     </div>
+
     <div id="response"></div>
 </div>
 
@@ -81,6 +196,7 @@
             responseDiv.innerHTML = `
                 <p><strong>Evaluation:</strong></p>
                 <pre>${data.evaluation}</pre>
+                <pre> time taken :${data.time_taken}</pre>
             `;
         } catch (err) {
             responseDiv.innerHTML = "<p>❌ Something went wrong.</p>";
@@ -92,8 +208,6 @@
 
     loadQuestion();
 </script>
-
-
 
 </body>
 </html>
