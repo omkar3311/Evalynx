@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse,JSONResponse
+from fastapi.responses import RedirectResponse
+from pydantic import BaseModel
 import pandas as pd
 from app import AI_que ,AI_res
 from questions import que
@@ -10,10 +12,14 @@ app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
+class user(BaseModel):
+    name : str 
+    profession : str 
+
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse(
-        "interview.html",
+        "intro.html",
         {"request": request}
     )
 @app.get("/question")
@@ -44,7 +50,28 @@ async def evaluate_answer(request: Request):
         "evaluation": ai_result,
         "time_taken": total_time
     }
-
+    
+current_user = {}
+@app.post("/user_data")
+def user_data(request : user):
+    current_user["name"] = request.name
+    current_user["profession"] = request.profession
+    return{
+        "status" : "ok" ,
+        "name"  : request.name ,
+        "profession" : request.profession
+    }
+    
+@app.get("/interview")
+def interview(request: Request):
+    return templates.TemplateResponse(
+        "interview.html",
+        {
+            "request": request,
+            "name": current_user["name"],
+            "profession": current_user["profession"]
+        }
+    )
 
 # CSV_PATH = "data.csv"
 # df = pd.read_csv(CSV_PATH , delimiter= ';')
