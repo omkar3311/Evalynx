@@ -15,20 +15,69 @@ body {
   margin: 0;
   min-height: 100vh;
   background: linear-gradient(135deg, #0f172a, #020617);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #e5e7eb;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 84px;
+  background: #020617;
+  border-bottom: 1px solid #1e293b;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+}
+
+.nav-inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.brand {
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.page {
+  padding-top: 120px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.welcome {
+  
+  font-size: 2rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .app {
   width: 100%;
   max-width: 900px;
+  margin: 0 auto;
   background: #020617;
   border-radius: 16px;
   padding: 20px;
   border: 1px solid #1e293b;
   box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .call-grid {
@@ -42,7 +91,6 @@ body {
   border: 1px solid #1e293b;
   border-radius: 14px;
   padding: 12px;
-  position: relative;
 }
 
 .ai-panel img {
@@ -85,10 +133,6 @@ video {
   gap: 8px;
 }
 
-.camera-controls button {
-  flex: 1;
-}
-
 .controls {
   margin-top: 16px;
   display: flex;
@@ -126,87 +170,46 @@ button:disabled {
   border: 1px solid #1e293b;
   display: none;
 }
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 84px;
-  background: linear-gradient(90deg, #020617, #020617);
-  border-bottom: 1px solid #1e293b;
-  display: flex;
-  align-items: center;
-  text-align:center;
-  z-index: 100;
-}
-
-.nav-inner {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.brand {
-  font-size: 1.75rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 </style>
 </head>
 
 <body>
 <div class="navbar">
   <div class="nav-inner">
-    <h1 class="brand">Evalynx</h1>
-  </div>  
+    <div class="brand">Evalynx</div>
+  </div>
 </div>
-<div class="app">
 
-  <h2 >Evalynx AI Interview</h2>
+<div class="page">
+  <div class="welcome">Welcome, {{ name }}</div>
 
-  <div class="call-grid">
+  <div class="app">
+    <h2>Evalynx AI Interview</h2>
 
-    <div class="panel ai-panel" id="aiPanel">
-      <img src="om.jpg" alt="AI Interviewer"/>
-      <div class="question-text" id="questionText">
-        Loading question...
+    <div class="call-grid">
+      <div class="panel ai-panel" id="aiPanel">
+        <img src="om.jpg" alt="AI Interviewer"/>
+        <div class="question-text" id="questionText">Loading question...</div>
+        <button id="speakBtn" onclick="speakAgain()" style="margin-top:8px;width:100%;">🔊 Read Again</button>
       </div>
-      <button id="speakBtn" onclick="speakAgain()()" 
-          title="Read question again"
-          style="margin-top:8px; width:100%;">
-            🔊 Read Again
-        </button>
-    </div>
 
-    <div class="panel">
-      <video id="cam" autoplay playsinline></video>
-
-      <div class="camera-controls">
-        <button id="startCam">Camera On</button>
-        <button id="stopCam" disabled>Camera Off</button>
+      <div class="panel">
+        <video id="cam" autoplay playsinline></video>
+        <div class="camera-controls">
+          <button id="startCam">Camera On</button>
+          <button id="stopCam" disabled>Camera Off</button>
+        </div>
       </div>
     </div>
 
+    <div class="controls">
+      <textarea id="answerInput" rows="2" placeholder="Speak or type your answer..."></textarea>
+      <button onclick="startListening()">🎤</button>
+      <button onclick="submitAnswer()">Submit</button>
+    </div>
+
+    <div id="response"></div>
   </div>
-
-  <div class="controls">
-    <textarea id="answerInput" rows="2" placeholder="Speak or type your answer..."></textarea>
-    <button onclick="startListening()">🎤</button>
-    <button onclick="submitAnswer()">Submit</button>
-  </div>
-
-  <div id="response"></div>
-
 </div>
 
 <script>
@@ -224,8 +227,7 @@ async function loadQuestion() {
 }
 
 function speakQuestion(text) {
-  if (!("speechSynthesis" in window)) return;
-  if (!text) return;
+  if (!("speechSynthesis" in window) || !text) return;
 
   const panel = document.getElementById("aiPanel");
   const speakBtn = document.getElementById("speakBtn");
@@ -234,27 +236,24 @@ function speakQuestion(text) {
 
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "en-US";
-  utter.rate = 1;
-  utter.pitch = 1;
 
   utter.onstart = () => {
     isSpeaking = true;
     panel.classList.add("ai-speaking");
-    if (speakBtn) speakBtn.disabled = true;
+    speakBtn.disabled = true;
   };
 
   utter.onend = () => {
     isSpeaking = false;
     panel.classList.remove("ai-speaking");
-    if (speakBtn) speakBtn.disabled = false;
+    speakBtn.disabled = false;
   };
 
   window.speechSynthesis.speak(utter);
 }
 
 function speakAgain() {
-  if (isSpeaking) return;
-  speakQuestion(currentQuestion);
+  if (!isSpeaking) speakQuestion(currentQuestion);
 }
 
 function startListening() {
@@ -262,14 +261,9 @@ function startListening() {
 
   recognition = new webkitSpeechRecognition();
   recognition.lang = "en-US";
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-
   recognition.onresult = e => {
-    document.getElementById("answerInput").value =
-      e.results[0][0].transcript;
+    document.getElementById("answerInput").value = e.results[0][0].transcript;
   };
-
   recognition.start();
 }
 
@@ -288,26 +282,21 @@ async function submitAnswer() {
   });
 
   const data = await res.json();
-  resDiv.innerHTML = `
-                <p><strong>Evaluation:</strong></p>
-                <pre>${data.evaluation}</pre>
-                <pre> time taken :${data.time_taken}</pre>
-            `;
+  resDiv.innerHTML = `<pre>${data.evaluation}</pre><pre>Time taken: ${data.time_taken}</pre>`;
 }
 
 const video = document.getElementById("cam");
 const startCam = document.getElementById("startCam");
 const stopCam = document.getElementById("stopCam");
 
-startCam.onclick = async () => {
+async function startCamera() {
   stream = await navigator.mediaDevices.getUserMedia({ video: true });
   video.srcObject = stream;
   startCam.disabled = true;
   stopCam.disabled = false;
-};
+}
 
 stopCam.onclick = () => {
-  if (!stream) return;
   stream.getTracks().forEach(t => t.stop());
   video.srcObject = null;
   stream = null;
@@ -315,9 +304,18 @@ stopCam.onclick = () => {
   stopCam.disabled = true;
 };
 
-loadQuestion();
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function initInterview() {
+  startCamera();
+  await delay(2000);
+  loadQuestion();
+}
+
+initInterview();
+
 </script>
-
-
 </body>
 </html>
