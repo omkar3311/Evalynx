@@ -138,7 +138,7 @@ button {
 </div>
 
 <script>
-function startInterview() {
+async function startInterview() {
   const name = document.getElementById("nameInput").value.trim();
   const topic = document.getElementById("topicInput").value;
   const errorText = document.getElementById("errorText");
@@ -154,11 +154,20 @@ function startInterview() {
     errorText.style.display = "block";
     return;
   }
+  const data = await fetch("/user_data" , {
+      method : "POST" ,
+      headers : {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+      name: name,
+      profession: topic 
+    })
+  }
+  
+  );
 
   errorText.style.display = "none";
-
-  sessionStorage.setItem("candidateName", name);
-  sessionStorage.setItem("interviewTopic", topic);
 
   window.location.href = "/interview";
 }
