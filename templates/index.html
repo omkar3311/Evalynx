@@ -194,7 +194,27 @@
         #read-btn:hover {
             transform: translateY(-1px);
         }
+        .container1 {
+            display: flex;
+            flex-direction: column;   
+            align-items: center;
+            gap: 12px;
+            }
 
+            video {
+            width: 400px;
+            border: 2px solid #333;
+            }
+
+            .controls {
+            display: flex;
+            gap: 10px;
+            }
+
+            button {
+            padding: 8px 14px;
+            font-size: 14px;
+            }
     </style>
 </head>
 
@@ -230,6 +250,15 @@
 
     <div id="response"></div>
 </div>
+
+<div class="container1">
+    <video id="cam" autoplay playsinline></video>
+
+    <div class="controls">
+      <button id="startBtn">Start Camera</button>
+      <button id="stopBtn" disabled>Stop Camera</button>
+    </div>
+  </div>
 
 <script>
     let currentQuestion = "";
@@ -344,7 +373,35 @@
             document.getElementById("read-btn").innerText = "🔊";
         };
     }
+    const video = document.getElementById("cam");
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
 
+    let stream = null;
+
+    startBtn.onclick = async () => {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+      } catch (err) {
+        console.error("Camera access denied:", err);
+      }
+    };
+
+    stopBtn.onclick = () => {
+      if (!stream) return;
+
+      stream.getTracks().forEach(track => track.stop());
+
+      video.srcObject = null;
+      stream = null;
+
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    };
 </script>
 
 </body>
