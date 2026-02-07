@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evalynx – Start Interview</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #e5e7eb;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+label {
+  font-size: 0.9rem;
+  color: #cbd5f5;
+}
+
+input, select {
+  width: 100%;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: #e5e7eb;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56,189,248,0.2);
+}
+
+#errorText {
+  color: #f87171;
+  font-size: 0.85rem;
+  margin: 0 0 12px;
+  display: none;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  color: #020617;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>Evalynx AI Interview</h1>
+
+  <label>Candidate Name</label>
+  <input id="nameInput" placeholder="Enter your name" oninput="clearError()">
+
+  <label>Interview Type</label>
+  <select id="topicInput" onchange="clearError()">
+    <option value="">Select interview</option>
+    <option value="frontend">Frontend Developer</option>
+    <option value="backend">Backend Developer</option>
+    <option value="data-science">Data Scientist</option>
+    <option value="aptitude">General Aptitude</option>
+    <option value="custom">Custom / Mixed</option>
+  </select>
+
+  <p id="errorText"></p>
+
+  <button onclick="startInterview()">Start Interview</button>
+</div>
+
+<script>
+function startInterview() {
+  const name = document.getElementById("nameInput").value.trim();
+  const topic = document.getElementById("topicInput").value;
+  const errorText = document.getElementById("errorText");
+
+  if (!name) {
+    errorText.innerText = "Please enter your name.";
+    errorText.style.display = "block";
+    return;
+  }
+
+  if (!topic) {
+    errorText.innerText = "Please select an interview type.";
+    errorText.style.display = "block";
+    return;
+  }
+
+  errorText.style.display = "none";
+
+  sessionStorage.setItem("candidateName", name);
+  sessionStorage.setItem("interviewTopic", topic);
+
+  window.location.href = "/interview";
+}
+
+function clearError() {
+  document.getElementById("errorText").style.display = "none";
+}
+</script>
+
+</body>
+</html>
