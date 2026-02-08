@@ -122,18 +122,6 @@ button {
   <label>Candidate Name</label>
   <input id="nameInput" placeholder="Enter your name" oninput="clearError()">
 
-  <!--
-  <label>Interview Type</label>
-  <select id="topicInput" onchange="clearError()">
-    <option value="">Select interview</option>
-    <option value="frontend">Frontend Developer</option>
-    <option value="backend">Backend Developer</option>
-    <option value="data-science">Data Scientist</option>
-    <option value="aptitude">General Aptitude</option>
-    <option value="custom">Custom / Mixed</option>
-  </select>
-  -->
-
   <p id="errorText"></p>
 
   <button onclick="startInterview()">Start Interview</button>
@@ -142,7 +130,6 @@ button {
 <script>
 async function startInterview() {
   const name = document.getElementById("nameInput").value.trim();
-  const topic = document.getElementById("topicInput").value;
   const errorText = document.getElementById("errorText");
 
   
@@ -152,13 +139,6 @@ async function startInterview() {
     return;
   }
 
-  /*
-  if (!topic) {
-    errorText.innerText = "Please select an interview type.";
-    errorText.style.display = "block";
-    return;
-  }
-    */
   const data = await fetch("/user_data" , {
       method : "POST" ,
       headers : {
@@ -166,7 +146,6 @@ async function startInterview() {
       },
       body: JSON.stringify({
       name: name
-      // profession: topic 
     })
   }
   
