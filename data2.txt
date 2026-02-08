@@ -1,0 +1,162 @@
+Q: What is Machine Learning?
+A:
+Machine Learning is a subset of Artificial Intelligence that enables a system to learn patterns from data and make predictions or decisions without being explicitly programmed.
+Instead of writing fixed rules, the model learns relationships from historical data and improves its performance as more data becomes available.
+
+--
+
+Q: What are the main types of Machine Learning?
+A:
+There are three main types of Machine Learning:
+
+Supervised Learning – The model is trained on labeled data, where input and output are known. Examples include Linear Regression and Classification.
+
+Unsupervised Learning – The model works with unlabeled data to discover hidden patterns, such as clustering.
+
+Reinforcement Learning – The model learns by interacting with an environment and receiving rewards or penalties based on actions.
+
+--
+
+Q: What is the difference between classification and regression?
+A:
+Classification is used when the output variable is categorical, such as spam vs non-spam or fraud vs non-fraud.
+Regression is used when the output variable is continuous, such as predicting house prices or temperature.
+In short, classification predicts classes, while regression predicts numeric values.
+
+--
+
+Q: What is overfitting in Machine Learning?
+A:
+Overfitting occurs when a model learns the training data too well, including noise and irrelevant patterns.
+As a result, the model performs very well on training data but poorly on unseen or test data.
+Overfitting can be reduced using techniques like regularization, cross-validation, and collecting more data.
+
+--
+
+Q: What is underfitting?
+A:
+Underfitting happens when a model is too simple to capture the underlying pattern in the data.
+It performs poorly on both training and test datasets.
+This usually occurs when important features are missing or the model complexity is too low.
+
+--
+
+Q: What is feature scaling and why is it important?
+A:
+Feature scaling is the process of normalizing or standardizing input features so they are on a similar scale.
+It is important because many algorithms like Gradient Descent, KNN, and SVM are sensitive to feature magnitude.
+Common techniques include Min-Max Scaling and Standardization.
+
+--
+
+Q: What is a loss function?
+A:
+A loss function measures how far the model’s predictions are from the actual target values.
+It helps guide the learning process by providing feedback during training.
+Examples include Mean Squared Error for regression and Cross-Entropy Loss for classification problems.
+
+--
+
+Q: What is train-test split and why is it used?
+A:
+Train-test split divides the dataset into two parts: one for training the model and another for testing its performance.
+It is used to evaluate how well the model generalizes to unseen data.
+A common split ratio is 80% training and 20% testing.
+
+--
+
+Q: What is bias and variance in Machine Learning?
+A:
+Bias refers to errors due to overly simplistic assumptions in the model, leading to underfitting.
+Variance refers to errors due to high sensitivity to training data, leading to overfitting.
+A good model maintains a balance between bias and variance, known as the bias-variance tradeoff.
+
+--
+
+Q: What is the role of hyperparameters in Machine Learning models?
+A:
+Hyperparameters are configuration settings defined before training the model, such as learning rate or number of trees.
+They control the learning process but are not learned from data.
+Proper tuning of hyperparameters improves model performance and generalization.
+
+--
+
+Q: What is data preprocessing in Machine Learning?
+A:
+Data preprocessing is the process of cleaning and transforming raw data into a suitable format for model training.
+It includes handling missing values, encoding categorical variables, feature scaling, and removing noise.
+Good preprocessing improves model accuracy and stability.
+
+--
+
+Q: What is normalization and how is it different from standardization?
+A:
+Normalization scales data to a fixed range, usually between 0 and 1.
+Standardization transforms data to have mean 0 and standard deviation 1.
+Normalization is useful when data has no Gaussian distribution, while standardization works better when data follows a normal distribution.
+
+--
+
+Q: What is a confusion matrix?
+A:
+A confusion matrix is a table used to evaluate classification models.
+It shows True Positives, True Negatives, False Positives, and False Negatives.
+From it, metrics like accuracy, precision, recall, and F1-score can be calculated.
+
+--
+
+Q: What is accuracy and when is it not a good metric?
+A:
+Accuracy is the ratio of correctly predicted observations to total observations.
+It is not a good metric when the dataset is imbalanced.
+For example, in fraud detection, high accuracy may still mean poor fraud detection performance.
+
+--
+
+Q: What is precision and recall?
+A:
+Precision measures how many predicted positives are actually correct.
+Recall measures how many actual positives are correctly identified.
+Precision is important when false positives are costly, while recall is important when false negatives are costly.
+
+--
+
+Q: What is gradient descent?
+A:
+Gradient descent is an optimization algorithm used to minimize the loss function.
+It works by iteratively adjusting model parameters in the direction of the negative gradient.
+The learning rate controls how big each step is during optimization.
+
+--
+
+Q: What is learning rate and why is it important?
+A:
+Learning rate determines how much the model weights change during training.
+A very high learning rate can cause the model to diverge, while a very low learning rate slows training.
+Choosing the right learning rate is critical for efficient convergence.
+
+--
+
+Q: What is cross-validation?
+A:
+Cross-validation is a technique used to evaluate model performance more reliably.
+The dataset is split into multiple folds, and the model is trained and tested multiple times.
+It helps reduce overfitting and gives a better estimate of real-world performance.
+
+--
+
+Q: What is regularization in Machine Learning?
+A:
+Regularization is a technique used to prevent overfitting by adding a penalty term to the loss function.
+It discourages overly complex models by limiting large weights.
+Common types include L1 (Lasso) and L2 (Ridge) regularization.
+
+--
+
+Q: What is the difference between a parameter and a hyperparameter?
+A:
+Parameters are learned directly from the training data, such as weights in a model.
+Hyperparameters are set before training, such as learning rate or number of neighbors in KNN.
+Both play an important role in model performance.
+
+--
