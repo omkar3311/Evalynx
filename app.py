@@ -1,4 +1,5 @@
 import ollama
+import re
 
 # def AI_que():
 #     print("AI_que called")
@@ -65,3 +66,9 @@ def import_data():
     with open("data2.txt" , "r") as f:
         text += f.read()
     text
+    
+def clean_text(text):
+    pattern = r"Q:(.*?)A:(.*?)--"
+    data = re.sub(r"\n" , "" , text)
+    data = re.findall(pattern,data,re.S)
+    return data
