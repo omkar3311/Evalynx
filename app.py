@@ -54,7 +54,9 @@ def client_storage_model():
     model = SentenceTransformer("all-MiniLM-L6-v2")
     return client , storage , model
 
-def encode_data(data , model ,storage):
+def encode_data():
+    data = clean_text()
+    _ , storage , model = client_storage_model()
     for i ,(q,a) in enumerate(data):
         emd = model.encode(q).tolist()
         storage.add(
@@ -64,7 +66,8 @@ def encode_data(data , model ,storage):
             metadatas=[{"answer": a}]
         )
         
-def retrive(model,user_que ,storage , k =3):
+def retrive(user_que , k =3):
+    _ , storage , model = client_storage_model()
     que = model.encode(user_que).tolist()
     results = storage.query(
         query_embeddings = [que],
