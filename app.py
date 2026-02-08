@@ -81,3 +81,14 @@ def client_storage_model():
     storage = client.get_or_create_collection(name = "rag_storage")
     model = SentenceTransformer("all-MiniLM-L6-v2")
     return client , storage , model
+
+def encode_data(data , model ,storage):
+    for i ,(q,a) in enumerate(data):
+        emd = model.encode(q).tolist()
+        storage.add(
+            ids = f"q{i}",
+            documents = [q],
+            embeddings = [emd],
+            metadatas=[{"answer": a}]
+        )
+    
