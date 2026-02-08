@@ -3,6 +3,7 @@ import re
 import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
+import numpy as np
 
 def AI_res(question, user_answer):
     print("AI_res called")
@@ -78,3 +79,5 @@ def questions():
     que = []
     for q ,a in enumerate(data):
         que.append(q)
+    ques = np.random.choice(que , size = 5 , replace =False)
+    return ques
