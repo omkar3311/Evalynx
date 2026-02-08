@@ -227,14 +227,19 @@ let currentQuestion = "";
 let recognition = null;
 let stream = null;
 let isSpeaking = false;
+let sessionId = null;
 
 async function loadQuestion() {
   const res = await fetch("/question");
   const data = await res.json();
+
+  sessionId = data.session_id;
   currentQuestion = data.question;
+
   document.getElementById("questionText").innerText = currentQuestion;
   speakQuestion(currentQuestion);
 }
+
 
 function speakQuestion(text) {
   if (!("speechSynthesis" in window) || !text) return;
@@ -283,21 +288,36 @@ async function submitAnswer() {
 
   const resDiv = document.getElementById("response");
   resDiv.style.display = "block";
-  resDiv.innerText = "Evaluating...";
+  resDiv.innerText = "Processing...";
 
-  const res = await fetch("/evaluate", {
+  const res = await fetch("/next-question", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ question: currentQuestion, answer })
+    body: JSON.stringify({
+      session_id: sessionId,
+      answer: answer
+    })
   });
 
   const data = await res.json();
-  resDiv.innerHTML = `<pre>${data.evaluation}</pre><pre>Time taken: ${data.time_taken}</pre>`;
+
+  if (data.done) {
+    resDiv.innerHTML = `<pre>${data.evaluation}</pre>`;
+    return;
+  }
+
+  currentQuestion = data.question;
+  document.getElementById("answerInput").value = "";
+  document.getElementById("questionText").innerText = currentQuestion;
+  speakQuestion(currentQuestion);
 }
+
 
 const video = document.getElementById("cam");
 const startCam = document.getElementById("startCam");
 const stopCam = document.getElementById("stopCam");
+
+startCam.onclick = startCamera;
 
 async function startCamera() {
   stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -328,8 +348,6 @@ async function initInterview() {
 }
 
 initInterview();
-
-
 
 </script>
 </body>
