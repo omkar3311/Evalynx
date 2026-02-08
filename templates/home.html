@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Evalynx</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #2c5364, #0f2027 70%);
+  color: white;
+  overflow: hidden;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.login-btn {
+  background: #46d782;
+  color: black;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+}
+
+.hero {
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fadeUp 0.8s ease forwards;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.brand-title {
+  font-size: clamp(80px, 10vw, 140px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.brand-title:hover {
+  transform: translateY(-8px);
+  text-shadow:
+    0 0 10px rgba(46, 204, 113, 0.7),
+    0 0 22px rgba(46, 204, 113, 0.45);
+}
+
+.hero p {
+  font-size: 20px;
+  opacity: 0.75;
+  margin-top: -90px;
+}
+
+.get-started {
+  background: #2ecc71;
+  color: black;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.get-started:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(46, 204, 113, 0.35);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(15, 32, 39, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.95);
+  color: black;
+  padding: 24px;
+  width: 360px;
+  border-radius: 14px;
+}
+
+label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.submit-btn {
+  background: #2ecc71;
+  border: none;
+  padding: 10px 24px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.error-msg {
+  color: #ff4d4d;
+  background: rgba(255,0,0,0.08);
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: none;
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="logo">Evalynx</div>
+</div>
+
+<div class="hero" id="hero">
+  <h1 class="brand-title">Evalynx</h1>
+  <p>AI-powered interview evaluation</p>
+  <div class="get-started" onclick="openLogin()">Get Started</div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeLogin(event)">
+  <div class="container">
+    <label>Candidate Name:</label>
+    <input id="nameInput" placeholder="Enter your name" oninput="clearError()">
+
+    <div id="errorText" class="error-msg"></div>
+
+    <button class="submit-btn" onclick="startInterview()">Start Interview</button>
+  </div>
+</div>
+
+<script>
+function openLogin() {
+  document.getElementById("overlay").style.display = "flex";
+  document.getElementById("hero").style.opacity = "0";
+}
+
+function closeLogin(e) {
+  if (e.target.id === "overlay") {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("hero").style.opacity = "1";
+  }
+}
+
+async function startInterview() {
+  const name = document.getElementById("nameInput").value.trim();
+  const errorText = document.getElementById("errorText");
+
+  if (!name) {
+    errorText.innerText = "Please enter your name.";
+    errorText.style.display = "block";
+    return;
+  }
+
+  await fetch("/user_data", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name })
+  });
+
+  window.location.href = "/interview";
+}
+
+function clearError() {
+  document.getElementById("errorText").style.display = "none";
+}
+</script>
+
+</body>
+</html>
