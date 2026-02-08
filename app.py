@@ -2,6 +2,7 @@ import ollama
 import re
 import chromadb
 from chromadb.config import Settings
+from sentence_transformers import SentenceTransformer
 
 # def AI_que():
 #     print("AI_que called")
@@ -75,7 +76,8 @@ def clean_text(text):
     data = re.findall(pattern,data,re.S)
     return data
 
-def client_storage():
+def client_storage_model():
     client = chromadb.Client(Settings(persist_directory = "chroma_db"))
     storage = client.get_or_create_collection(name = "rag_storage")
-    return client , storage
+    model = SentenceTransformer("all-MiniLM-L6-v2")
+    return client , storage , model
