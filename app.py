@@ -48,39 +48,35 @@ def clean_text():
     data = re.findall(pattern,data,re.S)
     return data
 
-def client_storage_model():
-    client = chromadb.Client(Settings(persist_directory = "chroma_db"))
-    storage = client.get_or_create_collection(name = "rag_storage")
-    model = SentenceTransformer("all-MiniLM-L6-v2")
-    return client , storage , model
+
+client = chromadb.Client(Settings(persist_directory = "chroma_db"))
+storage = client.get_or_create_collection(name = "rag_storage")
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def encode_data():
     data = clean_text()
-    _ , storage , model = client_storage_model()
     for i ,(q,a) in enumerate(data):
         emd = model.encode(q).tolist()
         storage.add(
-            ids = f"q{i}",
+            ids = [f"q{i}"],
             documents = [q],
             embeddings = [emd],
             metadatas=[{"answer": a}]
         )
-        
-def retrive(user_que , k =3):
-    _ , storage , model = client_storage_model()
+    client.persist()
+    
+def retrieve(user_que , k =3):
     que = model.encode(user_que).tolist()
     results = storage.query(
         query_embeddings = [que],
         n_results = k
         )
-    if not results["distances"][0]:
-        return "No answer found."
-    return results
+    return results["metadatas"][0][0]["answer"]
 
 def questions():
     data = clean_text()
     que = []
-    for q ,a in enumerate(data):
+    for i ,(q ,a) in enumerate(data):
         que.append(q)
     ques = np.random.choice(que , size = 5 , replace =False)
     return ques
