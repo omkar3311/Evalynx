@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse,JSONResponse
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 import pandas as pd
-from app import AI_que ,AI_res
+from app import AI_res , questions
 from questions import que
 import random
 import time
@@ -27,7 +27,7 @@ def home(request: Request):
     )
 @app.get("/question")
 def get_que():
-    question = random.choice(list(que.keys()))
+    question = questions()
     return {"question": question}
 
 @app.post("/evaluate")
