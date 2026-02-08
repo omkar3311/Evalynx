@@ -5,35 +5,54 @@ from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
-def AI_res(question, user_answer):
+def AI_res(ai_data: dict):
     print("AI_res called")
+    SYSTEM_PROMPT = (
+        "You are a senior Machine Learning Engineer conducting a technical interview.\n"
+        "You will be given exactly 5 questions.\n"
+        "Each question has:\n"
+        "- a reference answer (correct answer)\n"
+        "- a user answer\n\n"
+        "Rules:\n"
+        "- Each question is worth exactly 2 marks\n"
+        "- Total score is out of 10\n"
+        "- Give partial marks (0, 1, or 2) per question\n"
+        "- Judge correctness based ONLY on the reference answer\n"
+        "- Be strict but fair\n"
+        "- No extra explanations\n\n"
+        "Return output in EXACTLY this format:\n\n"
+        "Total Score: <number out of 10>\n\n"
+        "Per Question Evaluation:\n"
+        "1. Score: <0-2> | Feedback: <one short sentence>\n"
+        "2. Score: <0-2> | Feedback: <one short sentence>\n"
+        "3. Score: <0-2> | Feedback: <one short sentence>\n"
+        "4. Score: <0-2> | Feedback: <one short sentence>\n"
+        "5. Score: <0-2> | Feedback: <one short sentence>\n\n"
+        "Overall Feedback:\n"
+        "<2–3 sentences summarizing ML strengths and weaknesses>\n"
+        "Do NOT add anything else."
+    )
+
+    user_prompt = "Evaluate the following answers:\n\n"
+
+    for idx, (question, data) in enumerate(ai_data.items(), start=1):
+        user_prompt += (
+            f"Question {idx}: {question}\n"
+            f"Reference Answer: {data['reference_answer']}\n"
+            f"User Answer: {data['user_answer']}\n\n"
+        )
+
     response = ollama.chat(
         model="mistral:7b",
         messages=[
-            {
-                "role": "system",
-                "content": (
-                    "You are a strict computer science evaluator.\n"
-                    "Evaluate the user's answer to the given question.\n"
-                    "Return output in EXACTLY this format:\n\n"
-                    "Correct: yes or no\n"
-                    "Score: <number from 0 to 10>\n"
-                    "Feedback: <one or two sentences on how to improve>\n\n"
-                    "Do not add anything else."
-                )
-            },
-            {
-                "role": "user",
-                "content": (
-                    f"Question: {question}\n"
-                    f"User Answer: {user_answer}"
-                )
-            }
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt}
         ]
     )
+    print(response["message"]["content"].strip())
     print("AI_res recieved")
-
     return response["message"]["content"].strip()
+
 
 def import_data():
     text = ""
@@ -63,8 +82,7 @@ def encode_data():
             embeddings = [emd],
             metadatas=[{"answer": a}]
         )
-    client.persist()
-    
+
 def retrieve(user_que , k =3):
     que = model.encode(user_que).tolist()
     results = storage.query(
