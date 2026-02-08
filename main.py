@@ -21,7 +21,7 @@ class user(BaseModel):
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse(
-        "intro.html",
+        "home.html",
         {"request": request}
     )
     
