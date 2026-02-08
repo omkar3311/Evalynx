@@ -17,7 +17,6 @@ templates = Jinja2Templates(directory="templates")
 
 class user(BaseModel):
     name : str 
-    profession : str 
 
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
@@ -28,7 +27,7 @@ def home(request: Request):
 @app.get("/question")
 def get_que():
     question = questions()
-    return {"question": question}
+    return {"question": question[0]}
 
 @app.post("/evaluate")
 async def evaluate_answer(request: Request):
@@ -54,15 +53,14 @@ async def evaluate_answer(request: Request):
         "time_taken": total_time
     }
     
-current_user = {}
+current_user = None
 @app.post("/user_data")
 def user_data(request : user):
-    current_user["name"] = request.name
-    current_user["profession"] = request.profession
+    global current_user
+    current_user = request.name
     return{
         "status" : "ok" ,
-        "name"  : request.name ,
-        "profession" : request.profession
+        "name"  : request.name 
     }
     
 @app.get("/interview")
@@ -71,39 +69,7 @@ def interview(request: Request):
         "interview.html",
         {
             "request": request,
-            "name": current_user["name"],
-            "profession": current_user["profession"]
+            "name": current_user
         }
     )
 
-# CSV_PATH = "data.csv"
-# df = pd.read_csv(CSV_PATH , delimiter= ';')
-# df.columns = df.columns.str.strip()
-
-# @app.get("/")
-# def home(request: Request):
-#     types = sorted(df["Type"].dropna().unique().tolist())
-#     return templates.TemplateResponse(
-#         "appti.html",
-#         {"request": request, "types": types}
-#     )
-
-# @app.get("/questions/{qtype}")
-# def get_questions(qtype: str):
-#     filtered_df = df[df["Type"] == qtype]
-
-#     questions = filtered_df.to_dict(orient="records")
-#     return JSONResponse(questions)
-
-# @app.post("/check-answer")
-# async def check_answer(payload: dict):
-#     user_ans = payload["user_answer"]
-#     correct_ans = payload["correct_answer"]
-#     approach = payload["approach"]
-
-#     is_correct = user_ans == correct_ans
-
-#     return {
-#         "correct": is_correct,
-#         "approach": approach if not is_correct else None
-#     }
