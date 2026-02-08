@@ -322,11 +322,14 @@ async function initInterview() {
   startCamera();
   await delay(2000);
   loadQuestion();
+  await delay(2000);
+  startListening(); 
   
 }
 
 initInterview();
-startListening();
+
+
 
 </script>
 </body>
