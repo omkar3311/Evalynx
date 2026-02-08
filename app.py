@@ -59,3 +59,9 @@ def AI_res(question, user_answer):
     print("AI_res recieved")
 
     return response["message"]["content"].strip()
+
+def import_data():
+    text = ""
+    with open("data2.txt" , "r") as f:
+        text += f.read()
+    text
