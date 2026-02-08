@@ -40,7 +40,8 @@ def import_data():
         text += f.read()
     return text
     
-def clean_text(text):
+def clean_text():
+    text = import_data()
     pattern = r"Q:(.*?)A:(.*?)--"
     data = re.sub(r"\n" , "" , text)
     data = re.findall(pattern,data,re.S)
@@ -71,3 +72,9 @@ def retrive(model,user_que ,storage , k =3):
     if not results["distances"][0]:
         return "No answer found."
     return results
+
+def questions():
+    data = clean_text()
+    que = []
+    for q ,a in enumerate(data):
+        que.append(q)
