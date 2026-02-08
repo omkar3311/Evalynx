@@ -254,11 +254,12 @@
 
       <div class="controls">
         <textarea id="answerInput" rows="2" placeholder="Speak or type your answer..."></textarea>
-        <button onclick="startListening()">🎤</button>
-        <button onclick="submitAnswer()">Submit</button>
+        <button type="button" onclick="startListening()">🎤</button>
+        <button type="button" onclick="submitAnswer()">Submit</button>
       </div>
 
       <div id="response"></div>
+
       <div class="progress-wrapper">
         <div class="progress-bar">
           <div class="progress-fill" id="progressFill"></div>
@@ -359,14 +360,25 @@ function updateProgress() {
       })
     });
     if (answeredCount === TOTAL_QUESTIONS) {
+      
+      resDiv.style.display = "block";
       resDiv.innerText = "Evaluating your interview...";
     } else {
       resDiv.innerText = "Processing answer...";
     }
-    const data = await res.json();
 
+    const outro = `
+          That concludes the interview.
+          Please wait patiently while we evaluate your responses.
+            `;
+    speakQuestion(outro); 
+    const data = await res.json();
     if (data.done) {
-      resDiv.innerHTML = `<pre>${data.evaluation}</pre>`;
+      resDiv.style.display = "block";
+      resDiv.innerHTML = `
+      <h3>Evaluation</h3>
+      <pre>${data.evaluation}</pre>
+      <div>Time Taken: ${data.time_taken}s</div>`;
       return;
     }
 
