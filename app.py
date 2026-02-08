@@ -91,4 +91,13 @@ def encode_data(data , model ,storage):
             embeddings = [emd],
             metadatas=[{"answer": a}]
         )
-    
+        
+def retrive(model,user_que ,storage , k =3):
+    que = model.encode(user_que).tolist()
+    results = storage.query(
+        query_embeddings = [que],
+        n_results = k
+        )
+    if not results["distances"][0]:
+        return "No answer found."
+    return results
