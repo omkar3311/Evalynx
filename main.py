@@ -24,30 +24,57 @@ def home(request: Request):
         "intro.html",
         {"request": request}
     )
+    
+interview_sessions = {}
+
 @app.get("/question")
 def get_que():
-    question = questions()
-    return {"question": question[0]}
+    q_list = questions() 
+    session_id = str(time.time())
 
-@app.post("/evaluate")
-async def evaluate_answer(request: Request):
-    body = await request.json()
+    interview_sessions[session_id] = {
+        "questions": q_list,
+        "answers": [],
+        "index": 0
+    }
 
-    question = body.get("question", "")
-    answer = body.get("answer", "").strip().lower()
+    return {
+        "session_id": session_id,
+        "question": q_list[0]
+    }
 
-    if not question or not answer:
+class AnswerPayload(BaseModel):
+    session_id: str
+    answer: str
+
+@app.post("/next-question")
+def next_question(payload: AnswerPayload):
+    session = interview_sessions.get(payload.session_id)
+
+    if not session:
+        return {"error": "Invalid session"}
+
+    idx = session["index"]
+    question = session["questions"][idx]
+
+    session["answers"].append({
+        "question": question,
+        "answer": payload.answer
+    })
+
+    session["index"] += 1
+
+    if session["index"] < len(session["questions"]):
         return {
-            "correct": False,
-            "score": 0,
-            "feedback": "Missing question or answer"
+            "question": session["questions"][session["index"]],
+            "done": False
         }
+
     start_time = time.perf_counter()
-    ai_result = AI_res(question, answer)
+    ai_result = AI_res(question, session["answers"]["answer"])
     end_time = time.perf_counter()
 
     total_time = round(end_time - start_time, 2)
-
     return {
         "evaluation": ai_result,
         "time_taken": total_time
