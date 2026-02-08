@@ -4,16 +4,16 @@ from fastapi.responses import HTMLResponse,JSONResponse
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 import pandas as pd
-from app import AI_res , questions
+from app import AI_res , questions ,encode_data ,retrieve
 from questions import que
 import random
 import time
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
-
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
+encode_data()
 
 class user(BaseModel):
     name : str 
@@ -47,6 +47,7 @@ class AnswerPayload(BaseModel):
     session_id: str
     answer: str
 
+ai_data = {}
 @app.post("/next-question")
 def next_question(payload: AnswerPayload):
     session = interview_sessions.get(payload.session_id)
@@ -61,9 +62,13 @@ def next_question(payload: AnswerPayload):
         "question": question,
         "answer": payload.answer
     })
-
+    retrieved_ans = retrieve(question)
+    ai_data[question] = {
+        "reference_answer": retrieved_ans,
+        "user_answer": payload.answer
+    }
     session["index"] += 1
-
+    
     if session["index"] < len(session["questions"]):
         return {
             "question": session["questions"][session["index"]],
@@ -71,11 +76,12 @@ def next_question(payload: AnswerPayload):
         }
 
     start_time = time.perf_counter()
-    ai_result = AI_res(question, session["answers"]["answer"])
+    ai_result = AI_res(ai_data)
     end_time = time.perf_counter()
 
     total_time = round(end_time - start_time, 2)
     return {
+        "done": True,
         "evaluation": ai_result,
         "time_taken": total_time
     }
