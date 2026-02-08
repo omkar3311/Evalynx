@@ -1,354 +1,379 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Evalynx AI Interview</title>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evalynx AI Interview</title>
 
-<style>
-* {
-  box-sizing: border-box;
-  font-family: Inter, system-ui, sans-serif;
-}
+  <style>
+  * {
+    box-sizing: border-box;
+    font-family: Inter, system-ui, sans-serif;
+  }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a, #020617);
-  color: #e5e7eb;
-}
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: #e5e7eb;
+  }
 
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 84px;
-  background: #020617;
-  border-bottom: 1px solid #1e293b;
-  display: flex;
-  align-items: center;
-  text-align : center;
-  z-index: 100;
-}
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 84px;
+    background: #020617;
+    border-bottom: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    text-align : center;
+    z-index: 100;
+  }
 
-.nav-inner {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
+  .nav-inner {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
 
-.brand {
-  font-size: 1.75rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+  .brand {
+    font-size: 1.75rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-.page {
-  padding-top: 120px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
+  .page {
+    padding-top: 120px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
 
-.welcome {
-  
-  font-size: 2rem;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+  .welcome {
+    
+    font-size: 2rem;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-.app {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  background: #020617;
-  border-radius: 16px;
-  padding: 20px;
-  border: 1px solid #1e293b;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-}
+  .app {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #020617;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #1e293b;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-.call-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
+  .call-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
 
-.panel {
-  background: #020617;
-  border: 1px solid #1e293b;
-  border-radius: 14px;
-  padding: 12px;
-}
+  .panel {
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 12px;
+  }
 
-.ai-panel img {
+  .ai-panel img:not(.avatar) {
   width: 100%;
   height: 220px;
   object-fit: cover;
   border-radius: 10px;
 }
 
-.ai-speaking {
-  animation: pulse 1.2s infinite;
-}
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.3); }
-  50% { box-shadow: 0 0 0 8px rgba(56,189,248,0.15); }
-  100% { box-shadow: 0 0 0 0 rgba(56,189,248,0.3); }
-}
-
-.question-text {
-  margin-top: 10px;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  padding: 10px;
-  background: #020617;
-  border-radius: 8px;
-  border: 1px solid #1e293b;
-}
-
-video {
-  width: 100%;
-  height: 220px;
-  background: black;
-  border-radius: 10px;
-}
-
-.camera-controls {
-  margin-top: 8px;
-  display: flex;
-  gap: 8px;
-}
-
-.controls {
-  margin-top: 16px;
-  display: flex;
-  gap: 10px;
-}
-
-textarea {
-  flex: 1;
-  resize: none;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #1e293b;
-  background: #020617;
-  color: #e5e7eb;
-}
-
-button {
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
-  color: #020617;
-}
-
-button:disabled {
-  opacity: 0.6;
-}
-
-#response {
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #1e293b;
-  display: none;
-}
-#response pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-</style>
-</head>
-
-<body>
-<div class="navbar">
-  <div class="nav-inner">
-    <div class="brand">Evalynx</div>
-  </div>
-</div>
-
-<div class="page">
-  <div class="welcome">Welcome, {{ name }}</div>
-
-  <div class="app">
-    <h2>Evalynx AI Interview</h2>
-
-    <div class="call-grid">
-      <div class="panel ai-panel" id="aiPanel">
-        <img src="/static/images/om.jpg" alt="AI Interviewer">
-        <div class="question-text" id="questionText">Loading question...</div>
-        <button id="speakBtn" onclick="speakAgain()" style="margin-top:8px;width:100%;">🔊 Read Again</button>
-      </div>
-
-      <div class="panel">
-        <video id="cam" autoplay playsinline></video>
-        <div class="camera-controls">
-          <button id="startCam">Camera On</button>
-          <button id="stopCam" disabled>Camera Off</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="controls">
-      <textarea id="answerInput" rows="2" placeholder="Speak or type your answer..."></textarea>
-      <button onclick="startListening()">🎤</button>
-      <button onclick="submitAnswer()">Submit</button>
-    </div>
-
-    <div id="response"></div>
-  </div>
-</div>
-
-<script>
-let currentQuestion = "";
-let recognition = null;
-let stream = null;
-let isSpeaking = false;
-let sessionId = null;
-
-async function loadQuestion() {
-  const res = await fetch("/question");
-  const data = await res.json();
-
-  sessionId = data.session_id;
-  currentQuestion = data.question;
-
-  document.getElementById("questionText").innerText = currentQuestion;
-  speakQuestion(currentQuestion);
-}
-
-
-function speakQuestion(text) {
-  if (!("speechSynthesis" in window) || !text) return;
-
-  const panel = document.getElementById("aiPanel");
-  const speakBtn = document.getElementById("speakBtn");
-
-  window.speechSynthesis.cancel();
-
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = "en-US";
-
-  utter.onstart = () => {
-    isSpeaking = true;
-    panel.classList.add("ai-speaking");
-    speakBtn.disabled = true;
-  };
-
-  utter.onend = () => {
-    isSpeaking = false;
-    panel.classList.remove("ai-speaking");
-    speakBtn.disabled = false;
-  };
-
-  window.speechSynthesis.speak(utter);
-}
-
-function speakAgain() {
-  if (!isSpeaking) speakQuestion(currentQuestion);
-}
-
-function startListening() {
-  if (!("webkitSpeechRecognition" in window)) return;
-
-  recognition = new webkitSpeechRecognition();
-  recognition.lang = "en-US";
-  recognition.onresult = e => {
-    document.getElementById("answerInput").value = e.results[0][0].transcript;
-  };
-  recognition.start();
-}
-
-async function submitAnswer() {
-  const answer = document.getElementById("answerInput").value.trim();
-  if (!answer) return;
-
-  const resDiv = document.getElementById("response");
-  resDiv.style.display = "block";
-  resDiv.innerText = "Processing...";
-
-  const res = await fetch("/next-question", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      session_id: sessionId,
-      answer: answer
-    })
-  });
-
-  const data = await res.json();
-
-  if (data.done) {
-    resDiv.innerHTML = `<pre>${data.evaluation}</pre>`;
-    return;
+  .ai-speaking {
+    animation: pulse 1.2s infinite;
   }
 
-  currentQuestion = data.question;
-  document.getElementById("answerInput").value = "";
-  document.getElementById("questionText").innerText = currentQuestion;
-  speakQuestion(currentQuestion);
-}
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(56,189,248,0.15); }
+    100% { box-shadow: 0 0 0 0 rgba(56,189,248,0.3); }
+  }
 
+  .question-text {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    padding: 10px;
+    background: #020617;
+    border-radius: 8px;
+    border: 1px solid #1e293b;
+  }
 
-const video = document.getElementById("cam");
-const startCam = document.getElementById("startCam");
-const stopCam = document.getElementById("stopCam");
+  video {
+    width: 100%;
+    height: 220px;
+    background: black;
+    border-radius: 10px;
+  }
 
-startCam.onclick = startCamera;
+  .camera-controls {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+  }
 
-async function startCamera() {
-  stream = await navigator.mediaDevices.getUserMedia({ video: true });
-  video.srcObject = stream;
-  startCam.disabled = true;
-  stopCam.disabled = false;
-}
+  .controls {
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+  }
 
-stopCam.onclick = () => {
-  stream.getTracks().forEach(t => t.stop());
-  video.srcObject = null;
-  stream = null;
-  startCam.disabled = false;
-  stopCam.disabled = true;
-};
+  textarea {
+    flex: 1;
+    resize: none;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #1e293b;
+    background: #020617;
+    color: #e5e7eb;
+  }
 
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+  button {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    color: #020617;
+  }
 
-async function initInterview() {
-  startCamera();
-  await delay(2000);
-  loadQuestion();
-  await delay(2000);
-  startListening(); 
+  button:disabled {
+    opacity: 0.6;
+  }
+
+  #response {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #1e293b;
+    display: none;
+  }
+  #response pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .avatar {
+    width: 170px;
+    height: 170px;
+    border-radius: 100%;        
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 16px;       
+    border: 2px solid #1e293b;
+  }
   
-}
 
-initInterview();
+  </style>
+  </head>
 
-</script>
-</body>
-</html>
+  <body>
+  <div class="navbar">
+    <div class="nav-inner">
+      <div class="brand">Evalynx</div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="welcome">Welcome, {{ name }}</div>
+
+    <div class="app">
+      <h2>Evalynx AI Interview</h2>
+
+      <div class="call-grid">
+        <div class="panel ai-panel" id="aiPanel">
+          <img src="/static/images/om.jpg" alt="AI Interviewer" class="avatar">
+          <div class="question-text" id="questionText">Loading question...</div>
+          <button id="speakBtn" onclick="speakAgain()" style="margin-top:8px;width:100%;">🔊 Read Again</button>
+        </div>
+
+        <div class="panel">
+          <video id="cam" autoplay playsinline></video>
+          <div class="camera-controls">
+            <button id="startCam">Camera On</button>
+            <button id="stopCam" disabled>Camera Off</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <textarea id="answerInput" rows="2" placeholder="Speak or type your answer..."></textarea>
+        <button onclick="startListening()">🎤</button>
+        <button onclick="submitAnswer()">Submit</button>
+      </div>
+
+      <div id="response"></div>
+    </div>
+  </div>
+
+  <script>
+  let currentQuestion = "";
+  let recognition = null;
+  let stream = null;
+  let isSpeaking = false;
+  let sessionId = null;
+
+  async function loadQuestion() {
+    const res = await fetch("/question");
+    const data = await res.json();
+
+    sessionId = data.session_id;
+    currentQuestion = data.question;
+
+    document.getElementById("questionText").innerText = currentQuestion;
+    speakQuestion(currentQuestion);
+  }
+
+
+  function speakQuestion(text) {
+    if (!("speechSynthesis" in window) || !text) return;
+
+    const panel = document.getElementById("aiPanel");
+    const speakBtn = document.getElementById("speakBtn");
+
+    window.speechSynthesis.cancel();
+
+    const utter = new SpeechSynthesisUtterance(text);
+    
+    utter.lang = "en-US";
+
+    utter.onstart = () => {
+      isSpeaking = true;
+      panel.classList.add("ai-speaking");
+      speakBtn.disabled = true;
+    };
+
+    utter.onend = () => {
+      isSpeaking = false;
+      panel.classList.remove("ai-speaking");
+      speakBtn.disabled = false;
+    };
+
+    window.speechSynthesis.speak(utter);
+  }
+
+  function speakAgain() {
+    if (!isSpeaking) speakQuestion(currentQuestion);
+  }
+
+  function startListening() {
+    if (!("webkitSpeechRecognition" in window)) return;
+
+    recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.onresult = e => {
+      document.getElementById("answerInput").value = e.results[0][0].transcript;
+    };
+    recognition.start();
+  }
+
+  async function submitAnswer() {
+    const answer = document.getElementById("answerInput").value.trim();
+    if (!answer) return;
+
+    const resDiv = document.getElementById("response");
+    resDiv.style.display = "block";
+    resDiv.innerText = "Processing...";
+
+    const res = await fetch("/next-question", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        session_id: sessionId,
+        answer: answer
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.done) {
+      resDiv.innerHTML = `<pre>${data.evaluation}</pre>`;
+      return;
+    }
+
+    currentQuestion = data.question;
+    document.getElementById("answerInput").value = "";
+    document.getElementById("questionText").innerText = currentQuestion;
+  
+    speakQuestion(currentQuestion);
+  }
+
+
+  const video = document.getElementById("cam");
+  const startCam = document.getElementById("startCam");
+  const stopCam = document.getElementById("stopCam");
+
+  startCam.onclick = startCamera;
+
+  async function startCamera() {
+    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = stream;
+    startCam.disabled = true;
+    stopCam.disabled = false;
+  }
+
+  stopCam.onclick = () => {
+    stream.getTracks().forEach(t => t.stop());
+    video.srcObject = null;
+    stream = null;
+    startCam.disabled = false;
+    stopCam.disabled = true;
+  };
+
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function initInterview() {
+    startCamera();
+    await delay(1000);
+    const intro = `
+          Hello, and welcome to Evalynx.
+          I’ll be your AI interviewer today.
+          This interview is designed to understand your skills, thinking process, and communication ability.
+          Please answer each question honestly and clearly.
+          Take your time — there is no rush.
+          let’s begin.
+          Here is your First Question.
+            `;
+
+    speakQuestion(intro);
+    await delay(20000);
+    loadQuestion();
+    await delay(2000);
+    startListening(); 
+    
+  }
+
+  initInterview();
+
+  </script>
+  </body>
+  </html>
