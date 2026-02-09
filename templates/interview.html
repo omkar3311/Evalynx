@@ -217,6 +217,19 @@
   text-align: center;
   color: #cbd5f5;
 }
+.evaluation-text {
+    font-size: 1.1rem;        
+    line-height: 1.6;
+    margin: 12px 0 20px;
+    white-space: pre-wrap;    
+    color: #ffffffff;
+}
+
+.time-taken {
+    font-size: 0.9rem;
+    color: #b6acacff;
+    font-style: italic;
+}
 
 
 
@@ -351,6 +364,18 @@ function updateProgress() {
     answeredCount++;
     updateProgress();
 
+    if (answeredCount === TOTAL_QUESTIONS) {
+      const outro = `
+          That concludes the interview.
+          Please wait patiently while we evaluate your responses.
+            `;
+      speakQuestion(outro); 
+      await delay(6000);
+      resDiv.style.display = "block";
+      resDiv.innerText = "Evaluating your interview...";
+    } else {
+      resDiv.innerText = "Processing answer...";
+    }
     const res = await fetch("/next-question", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -359,25 +384,18 @@ function updateProgress() {
         answer: answer
       })
     });
-    if (answeredCount === TOTAL_QUESTIONS) {
-      
-      resDiv.style.display = "block";
-      resDiv.innerText = "Evaluating your interview...";
-    } else {
-      resDiv.innerText = "Processing answer...";
-    }
 
-    const outro = `
-          That concludes the interview.
-          Please wait patiently while we evaluate your responses.
-            `;
-    speakQuestion(outro); 
     const data = await res.json();
     if (data.done) {
+      speakQuestion("Here Is your Evaluation");
       resDiv.style.display = "block";
       resDiv.innerHTML = `
       <h3>Evaluation</h3>
-      <pre>${data.evaluation}</pre>
+
+        <div class="evaluation-text">
+            ${data.evaluation}
+        </div>
+
       <div>Time Taken: ${data.time_taken}s</div>`;
       return;
     }
@@ -387,6 +405,8 @@ function updateProgress() {
     document.getElementById("questionText").innerText = currentQuestion;
   
     speakQuestion(currentQuestion);
+    await delay(3000);
+    startListening()
   }
 
 
@@ -418,8 +438,9 @@ function updateProgress() {
   async function initInterview() {
     startCamera();
     await delay(1000);
+    const userName = "{{ name }}";
     const intro = `
-          Hello, and welcome to Evalynx.
+          Hello ${userName} , and welcome to Evalynx.
           I’ll be your AI interviewer today.
           This interview is designed to understand your skills, thinking process, and communication ability.
           Please answer each question honestly and clearly.
