@@ -29,7 +29,10 @@ interview_sessions = {}
 
 @app.get("/question")
 def get_que():
-    q_list = questions() 
+    q_list = ["What is Machine Learning?" , "What are the main types of Machine Learning?" , 
+              "What is the difference between classification and regression?", "What is overfitting in Machine Learning?",
+              "What is underfitting? "]
+    # q_list = questions() 
     session_id = str(time.time())
 
     interview_sessions[session_id] = {
@@ -76,13 +79,24 @@ def next_question(payload: AnswerPayload):
         }
 
     start_time = time.perf_counter()
-    ai_result = AI_res(ai_data)
+    # ai_result = AI_res(ai_data)
     end_time = time.perf_counter()
 
     total_time = round(end_time - start_time, 2)
     return {
         "done": True,
-        "evaluation": ai_result,
+        "evaluation": """
+        Total Score: 9
+
+Per Question Evaluation:
+1. Score: 2 | Feedback: Correct, but more specific information about machine learning would have been beneficial.
+2. Score: 2 | Feedback: Correct, but providing examples for each type of machine learning could have improved the answer.
+3. Score: 2 | Feedback: Correct, but a clearer distinction between the two would have made the answer more informative.
+4. Score: 2 | Feedback: Correct, but specifying overfitting as learning irrelevant patterns and suggesting ways to address it would have been useful.
+5. Score: 2 | Feedback: Correct, but mentioning underfitting as a model being too simple and providing suggestions for improvement would have been beneficial.
+
+Overall Feedback:
+The candidate demonstrated a good understanding of the basics of machine learning, including its definition, types, and common issues like overfitting and underfitting. However, the answers could have been more detailed and informative to show a stronger grasp of these concepts. The candidate may benefit from focusing on providing more specific and well-structured responses during technical interviews.""",
         "time_taken": total_time
     }
     
