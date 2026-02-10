@@ -22,3 +22,14 @@ The system dynamically selects questions, retrieves authoritative reference answ
 - Automated final evaluation and scoring
 
 ---
+
+## 🧠 Tech Stack
+
+### Backend
+- **FastAPI**
+- **Pydantic**
+- **Ollama (Mistral 7B)**
+- **ChromaDB**
+- **SentenceTransformers**
+- **NumPy**
+- **Python**
