@@ -23,6 +23,30 @@ The system dynamically selects questions, retrieves authoritative reference answ
 
 ---
 
+## 🧩 Build Interviews for Any Domain
+
+Evalynx is **domain-independent**.
+
+You can create interviews for **any field** (Data Science, Backend, DevOps, Cybersecurity, Finance, Medicine, etc.) by simply providing a new knowledge file.
+
+### How It Works
+- Create a new text file (e.g., `data.txt`)
+- Add question–answer pairs in the format:
+Q: <your question>
+A: <reference answer>
+- Replace the existing data file
+- Restart the application
+
+The system automatically:
+- Encodes the new data
+- Builds vector embeddings
+- Selects relevant questions
+- Evaluates answers using the same scoring logic
+
+No code changes are required.
+
+---
+
 ## 🧠 Tech Stack
 
 ### Backend
