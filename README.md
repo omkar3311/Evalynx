@@ -168,6 +168,8 @@ http://127.0.0.1:8000
 ```
 
 
-## 👨‍💻 Author
+## 👨‍💻 **Author**
 
-Developed by an engineer focused on **Machine Learning, Data Science, and AI system design**, with an emphasis on building practical, scalable tools that reflect real-world technical interview standards.
+   **Omkar Waghmare**  
+🎓 Aspiring Data Scientist.
+
