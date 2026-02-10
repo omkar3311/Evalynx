@@ -87,6 +87,18 @@ No code changes are required.
     ├── home.html
     └── interview.html
 
+## 🎯 Purpose
+
+Evalynx is designed to provide a realistic, AI-driven interview environment that closely mirrors real technical interviews.
+
+The platform helps candidates:
+- Practice structured technical explanations
+- Improve clarity and depth of answers
+- Manage time pressure during interviews
+- Receive objective, reference-grounded feedback
+- Prepare for interviews across different technical domains
+
+By combining Retrieval-Augmented Generation (RAG) with strict evaluation rules, Evalynx focuses on **correctness, reasoning, and communication**, not memorization.
 
 
 ## 🔄 Interview Workflow
