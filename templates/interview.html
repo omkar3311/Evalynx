@@ -491,13 +491,13 @@ function updateProgress() {
           I’ll be your AI interviewer today.
           This interview is designed to understand your skills, thinking process, and communication ability.
           Please answer each question honestly and clearly.
-          Take your time — there is no rush.
+          note that you have 1 minute for each question.
           let’s begin.
           Here is your First Question.
             `;
 
     speakQuestion(intro);
-    await delay(20000);
+    await delay(21000);
     loadQuestion();
     await delay(2000);
     startListening(); 
@@ -508,7 +508,7 @@ function updateProgress() {
 let borderTimer = null;
 const QUESTION_TIME = 60;
 let borderTimeLeft = QUESTION_TIME;
-
+let hasSpokenTenSecWarning = false;
 function startBorderTimer() {
   stopBorderTimer();
   showBorderTimer();
@@ -522,10 +522,14 @@ function startBorderTimer() {
 
     const progress = 1 - (borderTimeLeft / QUESTION_TIME);
     path.style.strokeDashoffset = progress.toString();
-
+    if (borderTimeLeft === 10 && !hasSpokenTenSecWarning) {
+      speakQuestion("You have 10 seconds left.");
+      hasSpokenTenSecWarning = true;
+    }
     if (borderTimeLeft <= 0) {
       stopBorderTimer();
       autoSubmitNoAnswer();
+      hasSpokenTenSecWarning = false;
     }
   }, 1000);
 }
