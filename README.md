@@ -68,6 +68,24 @@ No code changes are required.
 ---
 
 
+## 📂 Project Structure
+
+.
+├── app.py
+├── data2.txt
+├── main.py
+├── README.md
+├── requirements.txt
+├── static
+│   ├── css
+│   │   └── style.css
+│   ├── images
+│   │   └── evalynx.png
+│   └── js
+│       └── interview.js
+└── templates
+    ├── home.html
+    └── interview.html
 
 
 
