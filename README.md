@@ -135,6 +135,37 @@ No code changes are required.
 - Feedback is concise, technical, and interview-oriented
 
 ---
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the Project
+
+```bash
+git clone <your-repository-url>
+cd evalynx
+```
+### 2️⃣ Install Python Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+### 3️⃣ Pull the Ollama Model
+
+```bash
+ollama pull mistral:7b
+```
+Ensure Ollama is installed on your system before running this command.
+
+### 4️⃣ Start the FastAPI Server
+
+```bash
+uvicorn main:app --reload
+```
+
+### 5️⃣ Open the Application
+
+```bash
+http://127.0.0.1:8000
+```
 
 
 ## 👨‍💻 Author
