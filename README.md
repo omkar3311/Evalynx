@@ -140,7 +140,7 @@ No code changes are required.
 ### 1️⃣ Clone the Project
 
 ```bash
-git clone <your-repository-url>
+git clone <https://github.com/omkar3311/Evalynx.git>
 cd evalynx
 ```
 ### 2️⃣ Install Python Dependencies
