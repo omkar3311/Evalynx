@@ -33,3 +33,12 @@ The system dynamically selects questions, retrieves authoritative reference answ
 - **SentenceTransformers**
 - **NumPy**
 - **Python**
+
+### Frontend
+- HTML5
+- CSS (custom)
+- Vanilla JavaScript
+- Web Speech API (Text-to-Speech & Speech Recognition)
+- MediaDevices API (Camera)
+
+---
