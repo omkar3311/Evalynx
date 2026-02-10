@@ -42,3 +42,38 @@ The system dynamically selects questions, retrieves authoritative reference answ
 - MediaDevices API (Camera)
 
 ---
+
+
+
+
+
+## 🔄 Interview Workflow
+
+1. User enters their name and starts the interview
+2. A new interview session is created
+3. Five questions are selected dynamically from the knowledge base
+4. For each question:
+   - The AI interviewer reads the question aloud
+   - A 60-second timer is started
+   - The candidate responds via voice or text
+   - Answers are recorded and stored
+5. Reference answers are retrieved using vector similarity search
+6. After the final question:
+   - All responses are evaluated by the LLM
+   - Each question is scored out of 2
+   - A total score out of 10 is computed
+   - Detailed per-question feedback is generated
+7. Final evaluation is presented to the candidate
+
+---
+
+## 🧪 Evaluation Methodology
+
+- Each question carries exactly **2 marks**
+- Total score is calculated out of **10**
+- Partial scoring is allowed (0, 1, or 2)
+- Evaluation is based strictly on retrieved reference answers
+- Unanswered questions automatically receive a score of 0
+- Feedback is concise, technical, and interview-oriented
+
+---
