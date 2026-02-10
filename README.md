@@ -84,7 +84,7 @@ No code changes are required.
 
 
 ## 📂 Project Structure
-
+```bash
 .
 ├── app.py
 ├── data2.txt
@@ -102,7 +102,7 @@ No code changes are required.
     ├── home.html
     └── interview.html
 
-
+```
 
 
 ## 🔄 Interview Workflow
