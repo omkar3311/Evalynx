@@ -6,3 +6,19 @@ It uses **FastAPI**, **Retrieval-Augmented Generation (RAG)**, and **Ollama (Mis
 The system dynamically selects questions, retrieves authoritative reference answers, and evaluates candidate responses using a large language model under strict scoring rules.
 
 ---
+
+## 🚀 Features
+
+- AI-driven technical interviews
+- Dynamic question selection
+- Retrieval-Augmented Generation (RAG) for factual grounding
+- Strict per-question scoring
+- Structured feedback generation
+- Timed interview questions
+- Voice-based AI interviewer
+- Speech-to-text answer input
+- Webcam support
+- Interview progress tracking
+- Automated final evaluation and scoring
+
+---
