@@ -131,3 +131,8 @@ By combining Retrieval-Augmented Generation (RAG) with strict evaluation rules, 
 - Feedback is concise, technical, and interview-oriented
 
 ---
+
+
+## 👨‍💻 Author
+
+Developed by an engineer focused on **Machine Learning, Data Science, and AI system design**, with an emphasis on building practical, scalable tools that reflect real-world technical interview standards.
