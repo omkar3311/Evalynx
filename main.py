@@ -5,7 +5,6 @@ from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 import pandas as pd
 from app import AI_res , questions ,encode_data ,retrieve
-from questions import que
 import random
 import time
 from fastapi.staticfiles import StaticFiles
