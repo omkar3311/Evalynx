@@ -396,12 +396,12 @@ function updateProgress() {
 }
 
   async function submitAnswer(isAuto = false) {
-    stopBorderTimer();
-
+    
     const input = document.getElementById("answerInput");
     const answer = isAuto ? "" : input.value.trim();
-
+    
     if (!isAuto && !answer) return;
+    stopBorderTimer();
 
     const resDiv = document.getElementById("response");
     answeredCount++;
@@ -497,7 +497,7 @@ function updateProgress() {
             `;
 
     speakQuestion(intro);
-    await delay(21000);
+    await delay(20000);
     loadQuestion();
     await delay(2000);
     startListening(); 
